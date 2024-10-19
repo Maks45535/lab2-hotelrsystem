@@ -1,0 +1,50 @@
+/* Стиль для полів вводу */
+form input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ff0202;
+    border-radius: 5px;
+    background-color: #333; /* Тло поля */
+    color: #fff; /* Білий текст у полях */
+}
+
+
+/* Контейнер форми - вирівнювання по центру */
+.form-container {
+    display: flex;
+    justify-content: center; /* Вирівнювання по горизонталі */
+    align-items: center; /* Вирівнювання по вертикалі */
+}
+
+/* Стиль для тексту при введенні */
+form input::placeholder {
+    color: #ccc; /* Колір тексту-підказки */
+}
+
+/* При фокусі на полі вводу */
+form input:focus {
+    border-color: #009879; /* Зміна кольору рамки при фокусі */
+    outline: none;
+}
+
+/* Стилізація кнопки для контрасту */
+form button {
+    padding: 10px;
+    background-color: #009879;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #007f67;
+}
+
+.input-width{
+    width: 400px;
+}
+.button-width {
+    width: 420px;
+}

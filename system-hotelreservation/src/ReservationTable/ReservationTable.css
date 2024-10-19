@@ -1,0 +1,80 @@
+/* Основні стилі для таблиці */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+table thead {
+    background-color: #f44336;
+    color: #ffffff;
+    text-align: center;
+}
+
+table tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+
+
+table tr:last-of-type {
+    border-bottom: 2px solid #f44336;
+}
+
+/* Стилі для форми */
+form {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+}
+
+form input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #f44336;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #007f67;
+}
+
+/* Стилі для кнопок в таблиці */
+button {
+    padding: 5px 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #d32f2f;
+}
+
+/* Центрування тексту у стовпці ID */
+table th:first-child, table td:first-child {
+    text-align: center;
+    width: 50px;
+}

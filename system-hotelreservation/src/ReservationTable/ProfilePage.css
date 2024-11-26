@@ -1,0 +1,191 @@
+/* Загальний стиль для профілю */
+.profile-page {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Стилі для хедера */
+.profile-header {
+    background-color: #003580;
+    color: #fff;
+    padding: 20px;
+    position: fixed;  /* Фіксування хедера вгорі */
+    width: 100%;  /* Забезпечуємо, щоб хедер займав всю ширину */
+    top: 0;
+    left: 0;
+    z-index: 100; /* Забезпечуємо, щоб хедер був на передньому плані */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-buttons {
+    display: flex;
+}
+
+.back-button {
+    background-color: #fff;
+    color: #000000;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.profile-main {
+    padding: 20px;
+    margin-top: 100px;  /* Додаємо відступ для контенту під фіксованим хедером */
+}
+
+.profile-info {
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.profile-info h2 {
+    margin-top: 0;
+}
+
+.profile-details p {
+    margin: 10px 0;
+}
+
+.profile-settings {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.profile-settings h3 {
+    margin-top: 0;
+}
+
+.profile-settings button {
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.profile-footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #003580;
+    color: #fff;
+}
+
+.bookings-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.booking-card {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.booking-card h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.booking-card p {
+    margin: 5px 0;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
+.back-button:hover,
+.profile-settings button:hover {
+    background-color: #4a42c0;
+}
+
+/* Додаткові стилі для адаптації */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+}
+
+/* Адаптивність для малих екранів */
+@media (max-width: 768px) {
+    .profile-header {
+        padding: 15px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-buttons {
+        margin-top: 10px;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .profile-main {
+        margin-top: 120px;
+    }
+
+    .profile-info, .profile-settings {
+        padding: 15px;
+    }
+
+    .profile-settings button {
+        padding: 8px 16px;
+    }
+
+    .back-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-header {
+        padding: 10px;
+    }
+
+    .header-content {
+        font-size: 14px;
+    }
+
+    .profile-info, .profile-settings {
+        padding: 10px;
+    }
+
+    .back-button {
+        font-size: 14px;
+    }
+
+    .profile-settings button {
+        padding: 6px 12px;
+    }
+}

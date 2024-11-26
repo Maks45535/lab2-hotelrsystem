@@ -1,16 +1,19 @@
+/* Видаляємо всі обмеження і відступи */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%; /* Контейнер займає всю ширину */
+  margin: 0;   /* Немає автоматичного центрування */
+  padding: 0;  /* Відступів немає */
+  text-align: center; /* Якщо потрібно, залишаємо */
 }
 
+/* Інші стилі для логотипа — за бажанням */
 .logo {
   height: 6em;
-  padding: 1.5em;
+  padding: 0; /* Видалено padding */
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
@@ -33,10 +36,12 @@
   }
 }
 
+/* Стилі для карток — перевірте, чи потрібні вам вони */
 .card {
-  padding: 2em;
+  padding: 0; /* Видалено padding */
 }
 
+/* Інші стилі залишаються */
 .read-the-docs {
   color: #888;
 }

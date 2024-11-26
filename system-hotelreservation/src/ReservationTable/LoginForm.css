@@ -1,0 +1,72 @@
+/* LoginForm.css */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000; /* Чорний фон */
+    color: #fff; /* Білий текст */
+    font-family: Arial, sans-serif;
+}
+
+.login-form {
+    background-color: #1c1c1c; /* Темно-сірий фон форми */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.login-form input::placeholder {
+    color: #aaa;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #6448d9;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-form button:hover {
+    background-color: #333;
+}
+
+.login-form p {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.login-form a {
+    color: #fff;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.login-form a:hover {
+    color: #aaa;
+}

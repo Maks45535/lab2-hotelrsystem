@@ -13,14 +13,34 @@ const ReservationTable = () => {
         checkIn: '',
         checkOut: ''
     });
+    const [showFullData, setShowFullData] = useState(true); // Стан для перемикання між повними і скороченими даними
 
     // Завантажуємо дані з серверу при першому завантаженні сторінки
     useEffect(() => {
+        fetchFullData(); // Початково завантажуємо повні дані
+    }, []);
+
+    // Функція для завантаження повних даних
+    const fetchFullData = () => {
         fetch('http://localhost:5000/api/reservations')
             .then((response) => response.json())
-            .then((data) => setReservations(data))
-            .catch((error) => console.error('Error fetching data:', error));
-    }, []);
+            .then((data) => {
+                setReservations(data);
+                setShowFullData(true); // Показуємо всі дані
+            })
+            .catch((error) => console.error('Error fetching full data:', error));
+    };
+
+    // Функція для завантаження скорочених даних (10 записів з полями guest і email)
+    const fetchGuestEmailData = () => {
+        fetch('http://localhost:5000/api/reservations/guests')
+            .then((response) => response.json())
+            .then((data) => {
+                setReservations(data);
+                setShowFullData(false); // Показуємо скорочені дані
+            })
+            .catch((error) => console.error('Error fetching guest email data:', error));
+    };
 
     // Функція для додавання нового запису
     const addReservation = (newReservation) => {
@@ -86,6 +106,10 @@ const ReservationTable = () => {
     return (
         <div>
             <h2>Reservation List</h2>
+            <div className="table-controls">
+                <button onClick={fetchGuestEmailData}>Оновити дані</button>
+                <button onClick={fetchFullData}>Повернути повний список</button>
+            </div>
             {isEditing ? (
                 <EditReservationForm
                     currentReservation={currentReservation}
@@ -101,24 +125,24 @@ const ReservationTable = () => {
                     <th>ID</th>
                     <th>Guest</th>
                     <th>Email</th>
-                    <th>Check-In</th>
-                    <th>Check-Out</th>
+                    {showFullData && <th>Check-In</th>}
+                    {showFullData && <th>Check-Out</th>}
                     <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {reservations.length === 0 ? (
                     <tr>
-                        <td colSpan="5">No reservation available.</td>
+                        <td colSpan="6">No reservation available.</td>
                     </tr>
                 ) : (
                     reservations.map((reservation) => (
-                        <tr>
+                        <tr key={reservation.id}>
                             <td>{reservation.id}</td>
                             <td>{reservation.guest}</td>
                             <td>{reservation.email}</td>
-                            <td>{reservation.checkIn}</td>
-                            <td>{reservation.checkOut}</td>
+                            {showFullData && <td>{reservation.checkIn}</td>}
+                            {showFullData && <td>{reservation.checkOut}</td>}
                             <td>
                                 <button onClick={() => editReservation(reservation)}>Edit</button>
                                 <button onClick={() => deleteReservation(reservation.id)}>Delete</button>

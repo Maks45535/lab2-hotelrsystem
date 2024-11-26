@@ -1,0 +1,215 @@
+/* Загальні стилі */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    overflow-x: hidden; /* Вимикає горизонтальний скрол */
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Встановлюємо мінімальну висоту для контейнера */
+    width: 100%;
+}
+
+/* Шапка */
+.homepage-header {
+    background-color: #003580;
+    color: white;
+    padding: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgb(0, 0, 0); /* Легке затемнення шапки */
+    width: 100%; /* Ширина на весь екран */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-button {
+    background-color: white;
+    color: #000000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-button:hover {
+    background-color: #d9d9d9;
+}
+
+/* Головний блок */
+.homepage-main {
+    flex: 1; /* Головний блок займає все доступне місце */
+    padding: 40px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    overflow-y: auto;
+    background-color: #fff;
+    width: 100%;
+}
+
+/* Секція пошуку */
+.search-section {
+    text-align: center;
+}
+
+.search-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #003580;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    color: white;
+    width: 100%; /* Розтягує форму на весь екран */
+}
+
+.search-input {
+    padding: 15px;
+    font-size: 1rem;
+    border: 1px solid #003580;
+    color: #ffffff;
+    border-radius: 5px;
+    flex: 1;
+    max-width: 400px; /* Дозволяє полям бути більшими */
+}
+
+.search-input::placeholder {
+    color: #ffffff;
+}
+
+.search-button {
+    background-color: #003580;
+    color: white;
+    padding: 15px 25px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+/* Секція напрямків */
+.destinations-section {
+    text-align: center;
+}
+
+.destinations-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #003580;
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.destination-card {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(210, 27, 27, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.destination-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.destination-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.destination-card h3 {
+    padding: 10px;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.logout-button {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #333;
+}
+
+
+/* Футер */
+.homepage-footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #003580;
+    color: white;
+    font-size: 0.9rem;
+    width: 100%;
+    flex-shrink: 0; /* Гарантує, що футер не буде згорнутий */
+}
+
+/* Медіазапити для адаптивності */
+@media (max-width: 768px) {
+    .homepage-header {
+        padding: 15px;
+    }
+
+    .profile-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .search-section h2,
+    .destinations-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .search-input,
+    .search-button {
+        max-width: 250px;
+        font-size: 0.9rem;
+    }
+
+    .destinations-grid {
+        gap: 10px;
+    }
+}

@@ -1,7 +1,10 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const cors = require('cors'); // Додаємо бібліотеку CORS
+const bcrypt = require('bcrypt');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const User = require('./models/user'); // Підключення моделі користувача
+const Reservation = require('./models/reservation'); // Підключення моделі резервації
+
 const app = express();
 const PORT = 5000;
 
@@ -11,106 +14,111 @@ app.use(cors());
 // Middleware для роботи з JSON
 app.use(express.json());
 
-// Шлях до файлу з даними
-const dataFilePath = path.join(__dirname, 'reservations.json');
-
-// Маршрут для отримання всіх даних
-app.get('/api/reservations', (req, res) => {
-    fs.readFile(dataFilePath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: 'Failed to read data' });
-        }
-        res.json(JSON.parse(data));
-    });
+// Підключення до MongoDB
+mongoose.connect('mongodb+srv://maks:1234@cluster1.nousi.mongodb.net/hotelreservation', {
 });
 
-// Маршрут для додавання нових даних з автоматичною генерацією ID
-app.post('/api/reservations', (req, res) => {
+
+
+
+// ===================== КОРИСТУВАЧІ =====================
+
+// Реєстрація нового користувача
+app.post('/api/register', async (req, res) => {
+    const { name, email, password } = req.body;
+
+    // Перевіряємо, чи існує користувач з таким email
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return res.status(400).json({ error: 'User with this email already exists' });
+    }
+
+    // Хешуємо пароль
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Створюємо нового користувача і зберігаємо в базі даних
+    const newUser = new User({ name, email, password: hashedPassword });
+    await newUser.save();
+
+    res.status(201).json({ message: 'User registered successfully', user: { id: newUser._id, name, email } });
+});
+
+// Логін користувача
+app.post('/api/login', async (req, res) => {
+    const { name, password } = req.body;
+
+    // Знаходимо користувача
+    const user = await User.findOne({ name });
+    if (!user) {
+        return res.status(400).json({ error: 'Invalid username or password' });
+    }
+
+    // Перевіряємо пароль
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+        return res.status(400).json({ error: 'Invalid username or password' });
+    }
+
+    res.json({ message: 'Login successful', user: { id: user._id, name, email: user.email } });
+});
+
+// ===================== РЕЗЕРВАЦІЇ =====================
+
+// Маршрут для отримання всіх резервацій
+app.get('/api/reservations', async (req, res) => {
+    try {
+        const reservations = await Reservation.find();
+        res.json(reservations);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to get reservations' });
+    }
+});
+
+// Маршрут для додавання нової резервації
+app.post('/api/reservations', async (req, res) => {
     const newReservation = req.body;
 
-    // Читаємо поточні дані з reservations.json
-    fs.readFile(dataFilePath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: 'Failed to read data' });
-        }
-
-        let reservations = JSON.parse(data);
-
-        // Генерація нового ID
-        const newId = reservations.length > 0 ? reservations[reservations.length - 1].id + 1 : 1;
-        const reservationWithId = { ...newReservation, id: newId }; // Додаємо новий ID до запису
-
-        // Додаємо нове бронювання до масиву
-        reservations.push(reservationWithId);
-
-        // Записуємо оновлені дані назад до reservations.json
-        fs.writeFile(dataFilePath, JSON.stringify(reservations, null, 2), (err) => {
-            if (err) {
-                return res.status(500).json({ error: 'Failed to save data' });
-            }
-            // Повертаємо відповідь із доданим записом
-            res.status(201).json({ message: 'Reservation added successfully', reservation: reservationWithId });
-        });
-    });
+    try {
+        const reservation = new Reservation(newReservation);
+        await reservation.save();
+        res.status(201).json({ message: 'Reservation added successfully', reservation });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to save reservation' });
+    }
 });
 
-
-// Маршрут для оновлення існуючого запису
-app.put('/api/reservations/:id', (req, res) => {
-    const reservationId = parseInt(req.params.id);
+// Маршрут для оновлення резервації
+app.put('/api/reservations/:id', async (req, res) => {
+    const reservationId = req.params.id;
     const updatedReservation = req.body;
 
-    fs.readFile(dataFilePath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: 'Failed to read data' });
-        }
-
-        const reservations = JSON.parse(data);
-        const reservationIndex = reservations.findIndex((r) => r.id === reservationId);
-        if (reservationIndex === -1) {
+    try {
+        const reservation = await Reservation.findByIdAndUpdate(reservationId, updatedReservation, { new: true });
+        if (!reservation) {
             return res.status(404).json({ error: 'Reservation not found' });
         }
-
-        reservations[reservationIndex] = { ...reservations[reservationIndex], ...updatedReservation };
-
-        fs.writeFile(dataFilePath, JSON.stringify(reservations, null, 2), (err) => {
-            if (err) {
-                return res.status(500).json({ error: 'Failed to save data' });
-            }
-            res.json({ message: 'Reservation updated successfully' });
-        });
-    });
+        res.json({ message: 'Reservation updated successfully', reservation });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to update reservation' });
+    }
 });
 
+// Маршрут для видалення резервації
+app.delete('/api/reservations/:id', async (req, res) => {
+    const reservationId = req.params.id;
 
-// Маршрут для видалення запису
-app.delete('/api/reservations/:id', (req, res) => {
-    const reservationId = parseInt(req.params.id);
-
-    fs.readFile(dataFilePath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: 'Failed to read data' });
-        }
-
-        const reservations = JSON.parse(data);
-        const updatedReservations = reservations.filter((r) => r.id !== reservationId);
-
-        // Якщо запис не знайдений
-        if (reservations.length === updatedReservations.length) {
+    try {
+        const reservation = await Reservation.findByIdAndDelete(reservationId);
+        if (!reservation) {
             return res.status(404).json({ error: 'Reservation not found' });
         }
-
-        // Записуємо оновлені дані
-        fs.writeFile(dataFilePath, JSON.stringify(updatedReservations, null, 2), (err) => {
-            if (err) {
-                return res.status(500).json({ error: 'Failed to save data' });
-            }
-            res.status(200).json({ message: 'Reservation deleted successfully' });
-        });
-    });
+        res.status(200).json({ message: 'Reservation deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to delete reservation' });
+    }
 });
 
-// Запуск сервера
+// ===================== ЗАПУСК СЕРВЕРА =====================
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
